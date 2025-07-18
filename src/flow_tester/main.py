@@ -19,7 +19,6 @@ from flow_tester.core.interactive_menu import InteractiveMenu
 from flow_tester.core.flow_engine import FlowEngine
 from flow_tester.services.employee_loader import EmployeeLoader
 from flow_tester.utils.logging_utils import setup_logging
-from flow_tester.exceptions.flow_exceptions import FlowExecutionError
 
 # Rich imports for beautiful output
 try:
@@ -193,7 +192,7 @@ class WhatsAppFlowTester:
                 print(f"Successful: {successful}/{len(results)}")
                 print(f"Success Rate: {success_rate:.1f}%")
                 
-        except FlowExecutionError as e:
+        except RuntimeError as e:
             self.logger.error(f"Flow execution failed: {e}")
             self._display_error(f"Flow execution failed: {e}")
         except Exception as e:

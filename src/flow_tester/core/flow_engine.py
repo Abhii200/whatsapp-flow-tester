@@ -14,7 +14,6 @@ from flow_tester.tools.tool_factory import ToolFactory
 from flow_tester.core.llm_analyzer import LLMAnalyzer
 from flow_tester.services.response_handler import ResponseHandler
 from flow_tester.utils.time_utils import TimeUtils
-from flow_tester.exceptions.flow_exceptions import FlowExecutionError, ToolExecutionError
 from flow_tester.config.flow_config import FlowConfig
 
 
@@ -45,7 +44,7 @@ class FlowEngine:
         # Validate flow configuration
         is_valid, errors = flow_config.validate()
         if not is_valid:
-            raise FlowExecutionError(f"Invalid flow configuration: {', '.join(errors)}")
+            raise ValueError(f"Invalid flow configuration: {', '.join(errors)}")
         
         results = []
         is_multi_user = len(employees) > 1
@@ -91,7 +90,7 @@ class FlowEngine:
         employee_name = employee.get('Employee Name', '')
         
         if not employee_phone:
-            raise FlowExecutionError(f"Employee phone number is required for {employee_name}")
+            raise ValueError(f"Employee phone number is required for {employee_name}")
         
         context = {"last_message_id": None}
         executed_steps = []
@@ -110,7 +109,7 @@ class FlowEngine:
                     # Brief delay between steps
                     await asyncio.sleep(1)
                     
-                except ToolExecutionError as e:
+                except RuntimeError as e:
                     self.logger.warning(f"Step {step_index + 1} failed: {e}")
                     executed_steps.append({
                         'step_index': step_index,
@@ -191,7 +190,7 @@ class FlowEngine:
             # Create and execute tool
             tool = self.tool_factory.create_tool(tool_info["tool"])
             if not tool:
-                raise ToolExecutionError(f"Failed to create tool: {tool_info['tool']}")
+                raise RuntimeError(f"Failed to create tool: {tool_info['tool']}")
             
             # Execute tool based on type
             result = await self._execute_tool(tool, tool_info, employee, context)
@@ -210,7 +209,7 @@ class FlowEngine:
             
         except Exception as e:
             self.logger.error(f"Step execution failed: {e}")
-            raise ToolExecutionError(f"Step execution failed: {e}")
+            raise RuntimeError(f"Step execution failed: {e}")
     
     async def _execute_tool(self, tool, tool_info: Dict[str, Any], employee: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
         """Execute specific tool."""
@@ -240,7 +239,7 @@ class FlowEngine:
         elif tool_info["tool"] == "send_image":
             image_path = params.get("image_path")
             if not image_path or not Path(image_path).exists():
-                raise ToolExecutionError(f"Image file not found: {image_path}")
+                raise RuntimeError(f"Image file not found: {image_path}")
             
             # Upload image
             media_id, mime_type, sha256 = tool.upload_to_whatsapp_media_api(
@@ -250,7 +249,7 @@ class FlowEngine:
             )
             
             if not media_id:
-                raise ToolExecutionError("Failed to upload image")
+                raise RuntimeError("Failed to upload image")
             
             payload = tool.generate_payload(
                 employee_phone,
@@ -266,13 +265,13 @@ class FlowEngine:
         elif tool_info["tool"] == "send_voice":
             voice_path = params.get("voice_path")
             if not voice_path or not Path(voice_path).exists():
-                raise ToolExecutionError(f"Voice file not found: {voice_path}")
+                raise RuntimeError(f"Voice file not found: {voice_path}")
             
             # Upload voice
             media_id, mime_type, sha256 = tool.upload_to_fastapi_media(voice_path)
             
             if not media_id:
-                raise ToolExecutionError("Failed to upload voice")
+                raise RuntimeError("Failed to upload voice")
             
             payload = tool.generate_payload(
                 employee_phone,
@@ -285,10 +284,10 @@ class FlowEngine:
             response = tool.send(payload)
             
         else:
-            raise ToolExecutionError(f"Unknown tool type: {tool_info['tool']}")
+            raise RuntimeError(f"Unknown tool type: {tool_info['tool']}")
         
         if response.status_code != 200:
-            raise ToolExecutionError(f"Tool execution failed with status {response.status_code}")
+            raise RuntimeError(f"Tool execution failed with status {response.status_code}")
         
         return {'status_code': response.status_code}
     
