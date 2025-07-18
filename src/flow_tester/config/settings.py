@@ -62,29 +62,13 @@ class Settings:
             load_dotenv(env_path)
     
     def _create_directories(self):
-        """Create necessary directories."""
-        directories = [
+        """Create essential directories."""
+        essential_directories = [
             self.flows_directory,
-            self.media_directory,
-            self.results_directory,
             self.data_directory,
-            self.results_directory / "logs",
-            self.results_directory / "logs" / "execution_logs",
-            self.results_directory / "logs" / "error_logs",
-            self.results_directory / "reports",
-            self.results_directory / "reports" / "flow_results",
-            self.results_directory / "reports" / "analytics",
-            self.media_directory / "temp",
-            self.media_directory / "images",
-            self.media_directory / "images" / "odometer",
-            self.media_directory / "images" / "receipts",
-            self.media_directory / "images" / "maintenance",
-            self.media_directory / "audio",
-            self.media_directory / "audio" / "voice_notes",
-            self.media_directory / "audio" / "recordings",
         ]
         
-        for directory in directories:
+        for directory in essential_directories:
             directory.mkdir(parents=True, exist_ok=True)
     
     def validate_configuration(self) -> tuple[bool, list[str]]:
