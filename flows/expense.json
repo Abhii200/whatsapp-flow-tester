@@ -1,0 +1,27 @@
+{
+  "trigger": "expense",
+  "description": "Expense submission flow for 25 employees with receipt upload",
+  "data_source": "data/expense_employees.xlsx",
+  "user_count": 25,
+  "flow_steps": [
+    "step1: User sends a message 'Stop' to initiate the expense flow.",
+    "Step2: User sends a message 'expense' to start expense submission.",
+    "Step3: User uploads an expense receipt image 'media/images/receipts/receipt_001.jpg'.",
+    "Step4: User sends expense amount message '$125.50'.",
+    "Step5: User sends expense description 'Client dinner meeting'.",
+    "Step6: User sends a message 'submit' to complete the expense submission."
+  ],
+  "media_paths": [
+    "media/images/receipts/"
+  ],
+  "validation_rules": {
+    "required_receipt": true,
+    "amount_format": "currency",
+    "description_required": true
+  },
+  "success_criteria": {
+    "min_steps_completed": 5,
+    "receipt_processed": true,
+    "amount_extracted": true
+  }
+}

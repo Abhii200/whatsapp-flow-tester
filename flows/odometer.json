@@ -1,0 +1,15 @@
+{
+    "trigger": "odometer",
+    "description": "Odometer reading flow for employees",
+    "data_source": "data/employees.csv",
+    "user_count": 10,
+    "flow_steps": [
+        "step1: User sends a message 'Stop' to initiate the odometer flow.",
+        "Step2: User sends a message 'Odometer' to start the odometer flow.",
+        "Step3: User uploads an image 'media/images/odometer/4628082811_bd628e4998_b.jpg' as proof of the odometer reading.",
+        "step4: User sends a message 'Stop' message to complete the flow."
+    ],
+    "media_paths": [
+        "media/images/odometer/"
+    ]
+}

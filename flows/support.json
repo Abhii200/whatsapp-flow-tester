@@ -1,0 +1,27 @@
+{
+  "trigger": "support",
+  "description": "Support request flow for 15 team members with voice messages",
+  "data_source": "data/support_team.xlsx",
+  "user_count": 15,
+  "flow_steps": [
+    "step1: User sends a message 'Stop' to initiate the support flow.",
+    "Step2: User sends a message 'support' to start support request.",
+    "Step3: User sends priority level message 'high'.",
+    "Step4: User sends voice message describing the issue 'media/audio/voice_notes/support_001.wav'.",
+    "Step5: User sends category message 'technical'.",
+    "Step6: User sends a message 'submit' to complete the support request."
+  ],
+  "media_paths": [
+    "media/audio/voice_notes/"
+  ],
+  "validation_rules": {
+    "required_voice": true,
+    "priority_levels": ["low", "medium", "high", "urgent"],
+    "categories": ["technical", "billing", "general", "feature"]
+  },
+  "success_criteria": {
+    "min_steps_completed": 5,
+    "voice_transcribed": true,
+    "priority_set": true
+  }
+}

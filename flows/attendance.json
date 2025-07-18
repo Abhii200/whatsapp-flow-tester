@@ -1,0 +1,22 @@
+{
+  "trigger": "attendance",
+  "description": "Attendance flow with checkin and checkout",
+  "data_source": "data/employees.csv",
+  "user_count": 1,
+  "flow_steps": [
+    "step1: User sends a message 'Stop' to initiate the attendance flow.",
+    "Step2: User sends a message 'attendance' to start attendance flow.",
+    "Step3: User sends their current location coordinates for checkin 'latitude: 16.542298847112292, longitude: 81.4968731867673'.",
+    "Step4: User sends a message 'attendance' for checkout.",
+    "Step5: User sends their current location coordinates for checkout 'latitude: 16.542298847112292, longitude: 81.4968731867673'."
+  ],
+  "media_paths": [],
+  "validation_rules": {
+    "required_location": true,
+    "location_accuracy": "high"
+  },
+  "success_criteria": {
+    "min_steps_completed": 4,
+    "location_received": true
+  }
+}
