@@ -111,6 +111,9 @@ class Settings:
         path = self.media_directory / media_type
         if subfolder:
             path = path / subfolder
+        
+        # Create the directory if it doesn't exist
+        path.mkdir(parents=True, exist_ok=True)
         return path
     
     def get_log_file_path(self, log_type: str, filename: str) -> Path:
@@ -124,7 +127,9 @@ class Settings:
         Returns:
             Path to log file
         """
-        return self.results_directory / "logs" / log_type / filename
+        log_dir = self.results_directory / "logs" / log_type
+        log_dir.mkdir(parents=True, exist_ok=True)
+        return log_dir / filename
     
     def get_report_file_path(self, report_type: str, filename: str) -> Path:
         """
@@ -137,7 +142,9 @@ class Settings:
         Returns:
             Path to report file
         """
-        return self.results_directory / "reports" / report_type / filename
+        report_dir = self.results_directory / "reports" / report_type
+        report_dir.mkdir(parents=True, exist_ok=True)
+        return report_dir / filename
     
     @property
     def is_configured(self) -> bool:

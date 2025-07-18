@@ -13,7 +13,6 @@ import logging
 from flow_tester.tools.tool_factory import ToolFactory
 from flow_tester.core.llm_analyzer import LLMAnalyzer
 from flow_tester.services.response_handler import ResponseHandler
-from flow_tester.utils.time_utils import TimeUtils
 from flow_tester.config.flow_config import FlowConfig
 
 
@@ -26,7 +25,6 @@ class FlowEngine:
         self.tool_factory = ToolFactory(settings)
         self.llm_analyzer = LLMAnalyzer(settings)
         self.response_handler = ResponseHandler(settings)
-        self.time_utils = TimeUtils()
     
     async def execute_flow(self, flow_data: Dict[str, Any], employees: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
