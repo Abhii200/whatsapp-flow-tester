@@ -34,8 +34,7 @@ class FlowConfig:
         errors = []
         
         # Required fields
-        if not self.trigger:
-            errors.append("Flow trigger is required")
+        # 'trigger' is optional for API-generated flows
         
         if not self.description:
             errors.append("Flow description is required")
